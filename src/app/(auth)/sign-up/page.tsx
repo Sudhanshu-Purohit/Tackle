@@ -1,10 +1,9 @@
+'use client';
+
+import { SignUpCard } from "@/features/auth/components/sign-up-card";
 
 const SignUp = () => {
-  return (
-    <div>
-      signup page
-    </div>
-  )
+  return <SignUpCard />
 }
 
 export default SignUp;
