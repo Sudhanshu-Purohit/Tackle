@@ -9,17 +9,15 @@ import { useForm } from "react-hook-form";
 import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { z } from "zod";
-
-const formSchema = z.object({
-    name: z.string().trim().min(2, "Name is required"),
-    email: z.string().trim().email(),
-    password: z.string().min(5, "Password must be atleast 5 chars long"),
-})
+import { useSignUp } from "../api/use-signup";
+import { signUpSchema } from "../schemas";
 
 export const SignUpCard = () => {
 
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
+    const { mutate } = useSignUp();
+
+    const form = useForm<z.infer<typeof signUpSchema>>({
+        resolver: zodResolver(signUpSchema),
         defaultValues: {
             name: "",
             email: "",
@@ -27,8 +25,8 @@ export const SignUpCard = () => {
         }
     })
 
-    const onSubmit = (values: z.infer<typeof formSchema>) => {
-        console.log(values)
+    const onSubmit = (values: z.infer<typeof signUpSchema>) => {
+        mutate({ json: values });
     }
 
     return (

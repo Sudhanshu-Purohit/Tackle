@@ -9,24 +9,23 @@ import { useForm } from "react-hook-form";
 import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { z } from "zod";
-
-const formSchema = z.object({
-  email: z.string().trim().email(),
-  password: z.string().min(5, "Password must be atleast 5 chars long"),
-})
+import { useSignIn } from "../api/use-signin";
+import { signInSchema } from "../schemas";
 
 export const SignInCard = () => {
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const { mutate } = useSignIn();
+
+  const form = useForm<z.infer<typeof signInSchema>>({
+    resolver: zodResolver(signInSchema),
     defaultValues: {
       email: "",
       password: ""
     }
   })
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values)
+  const onSubmit = (values: z.infer<typeof signInSchema>) => {
+    mutate({json: values});
   }
 
   return (
