@@ -2,6 +2,7 @@ import { client } from "@/lib/rpc"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { InferRequestType, InferResponseType } from "hono"
 import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 
 
 // InferRequestType
@@ -23,8 +24,12 @@ export const useSignUp = () => {
             return await response.json()
         },
         onSuccess: () => {
+            toast.success('Signup successful! 🎉');
             router.refresh();
             queryClient.invalidateQueries({ queryKey: ['current'] })
+        },
+        onError: (error) => {
+            toast.error("Oops! There was an issue signing you up. 😟");
         }
     })
 
