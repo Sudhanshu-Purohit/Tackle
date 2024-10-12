@@ -9,7 +9,7 @@ const Home = async () => {
 
   return (
     <div>
-      <UserButton />
+      this is a home page
     </div>
   )
 }
