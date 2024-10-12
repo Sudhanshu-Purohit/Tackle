@@ -1,10 +1,10 @@
+import { sessionMiddleware } from '@/lib/session-middleware';
 import { createAdminClient } from '@/services/appwrite';
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';
 import { deleteCookie, setCookie } from 'hono/cookie';
 import { ID } from 'node-appwrite';
 import { signInSchema, signUpSchema } from '../schemas';
-import { sessionMiddleware } from '@/lib/session-middleware';
 
 const app = new Hono()
     .get('/current-user', sessionMiddleware, async (c) => {
@@ -19,8 +19,7 @@ const app = new Hono()
         const { email, password } = c.req.valid('json');
 
         const { account } = await createAdminClient();
-
-        await account.create(ID.unique(), email, password);
+        
         const session = await account.createEmailPasswordSession(email, password);
 
         setCookie(c, "auth-cookie", session.secret, {
