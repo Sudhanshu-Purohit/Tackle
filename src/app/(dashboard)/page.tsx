@@ -1,17 +1,20 @@
 import { getCurrentUser } from "@/features/auth/get-current-user";
-import { CreateWorkspaceForm } from "@/features/workspaces/components/create-workspace-form";
+import { getWorkspaces } from "@/features/workspaces/get-workspaces";
 import { redirect } from "next/navigation";
 
 const Home = async () => {
 
   const user = await getCurrentUser();
-  if(!user) redirect('/sign-in');
+  if (!user) redirect('/sign-in');
 
-  return (
-    <div className="bg-red-600 p-4 h-full">
-      <CreateWorkspaceForm />
-    </div>
-  )
+  const workspaces = await getWorkspaces();
+
+  if (workspaces.total === 0) {
+    redirect('/workspaces/create');
+  } else {
+    redirect(`/workspaces/${workspaces.documents[0].$id}`);
+  }
+  
 }
 
 export default Home;
