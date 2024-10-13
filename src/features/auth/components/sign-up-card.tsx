@@ -28,7 +28,11 @@ export const SignUpCard = () => {
     })
 
     const onSubmit = (values: z.infer<typeof signUpSchema>) => {
-        mutate({ json: values });
+        mutate({ json: values }, {
+            onSuccess: () => {
+                form.reset();
+            }
+        });
     }
 
     return (

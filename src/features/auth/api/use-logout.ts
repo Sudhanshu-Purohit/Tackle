@@ -18,7 +18,12 @@ export const useLogout = () => {
 
     const mutation = useMutation<ResType, Error>({
         mutationFn: async () => {
-            const response = await client.api.auth.logout["$post"]()
+            const response = await client.api.auth.logout["$post"]();
+
+            if (!response.ok) {
+                throw new Error(); // this will redirect to onError function
+            }
+            
             return await response.json()
         },
         onSuccess: () => {

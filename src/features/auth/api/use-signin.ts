@@ -20,7 +20,12 @@ export const useSignIn = () => {
 
     const mutation = useMutation<ResType, Error, ReqType>({
         mutationFn: async ({ json }) => {
-            const response = await client.api.auth["sign-in"]["$post"]({ json })
+            const response = await client.api.auth["sign-in"]["$post"]({ json });
+
+            if (!response.ok) {
+                throw new Error(); // this will redirect to onError function
+            }
+            
             return await response.json()
         },
         onSuccess: () => {
